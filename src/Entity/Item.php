@@ -19,17 +19,17 @@ class Item
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $format;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $genre;
+    private $genre1;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $genre2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -37,29 +37,19 @@ class Item
     private $region;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $duration;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $releaseDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $creator;
+    private $publisher;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $songlist;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -70,11 +60,6 @@ class Item
      * @ORM\Column(type="integer", nullable=true)
      */
     private $price;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $lend;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -96,21 +81,14 @@ class Item
      */
     private $dateModified;
 
+    /**
+     * 
+     */
+    private $honeypot;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getFormat(): ?string
@@ -125,14 +103,26 @@ class Item
         return $this;
     }
 
-    public function getGenre(): ?string
+    public function getGenre1(): ?string
     {
-        return $this->genre;
+        return $this->genre1;
     }
 
-    public function setGenre(?string $genre): self
+    public function setGenre1(?string $genre1): self
     {
-        $this->genre = $genre;
+        $this->genre1 = $genre1;
+
+        return $this;
+    }
+
+    public function getGenre2(): ?string
+    {
+        return $this->genre2;
+    }
+
+    public function setGenre2(?string $genre2): self
+    {
+        $this->genre2 = $genre2;
 
         return $this;
     }
@@ -149,38 +139,26 @@ class Item
         return $this;
     }
 
-    public function getDuration(): ?string
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(?string $duration): self
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    public function getReleaseDate(): ?\DateTimeInterface
+    public function getReleaseDate()
     {
         return $this->releaseDate;
     }
 
-    public function setReleaseDate(?\DateTimeInterface $releaseDate): self
+    public function setReleaseDate(?int $releaseDate): self
     {
         $this->releaseDate = $releaseDate;
 
         return $this;
     }
 
-    public function getCreator(): ?string
+    public function getPublisher(): ?string
     {
-        return $this->creator;
+        return $this->publisher;
     }
 
-    public function setCreator(?string $creator): self
+    public function setPublisher(?string $publisher): self
     {
-        $this->creator = $creator;
+        $this->publisher = $publisher;
 
         return $this;
     }
@@ -193,18 +171,6 @@ class Item
     public function setTitle(?string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getSonglist(): ?string
-    {
-        return $this->songlist;
-    }
-
-    public function setSonglist(?string $songlist): self
-    {
-        $this->songlist = $songlist;
 
         return $this;
     }
@@ -229,18 +195,6 @@ class Item
     public function setPrice(?int $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getLend(): ?bool
-    {
-        return $this->lend;
-    }
-
-    public function setLend(bool $lend): self
-    {
-        $this->lend = $lend;
 
         return $this;
     }
@@ -289,6 +243,19 @@ class Item
     public function setDateModified(\DateTimeInterface $dateModified): self
     {
         $this->dateModified = $dateModified;
+
+        return $this;
+    }
+
+    public function getHoneyPot()
+    {
+        return $this->honeypot;
+    }
+
+  
+    public function setHoneyPot(string $honeypot): self
+    {
+        $this->honeypot = $honeypot;
 
         return $this;
     }

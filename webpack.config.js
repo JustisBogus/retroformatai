@@ -27,7 +27,7 @@ Encore
 
     .enableReactPreset()
     
-    .addEntry('app', './assets/js/app.js')
+    .addEntry('entry1', './assets/js/app.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

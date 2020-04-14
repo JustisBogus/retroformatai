@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="addForm-container">
+    {{ form_start(form) }}
+
+    {{ form_row(form.format) }}
+
+    {{ form_widget(form.honeypot, {attr: {class: 'form-control', style: 'display:none !important', tabindex: '-1', autocomplete: 'off', ref: 'init'}}) }}
+    
+    {{ form_end(form)}}
+    </div>
+{% endblock %}
