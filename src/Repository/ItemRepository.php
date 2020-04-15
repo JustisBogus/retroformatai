@@ -19,6 +19,20 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
+    public function findFilteredItems($format)
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i');
+        if($format) {
+            return
+            $qb->where('i.format = :format')
+            ->setParameter('format', $format)
+            ->getQuery()
+            ->getResult();
+        }
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */

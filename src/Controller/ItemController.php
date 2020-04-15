@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Item;
 use App\Form\FilterType;
 use App\Form\ItemType;
+use App\Repository\ItemRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,10 +53,17 @@ class ItemController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(ItemRepository $itemRepository)
     {
+        $format = 'sega_genesis';
+        $items = $itemRepository->findFilteredItems($format);
+        
         $form = $this->formFactory->create(FilterType::class);
-        return $this->render('layout/index.html.twig', ['form' => $form->createView() ]);
+        return $this->render('layout/index.html.twig', 
+            [
+                'form' => $form->createView(),
+                'items' => $items 
+            ]);
     }
 
     /**

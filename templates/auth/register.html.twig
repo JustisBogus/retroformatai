@@ -1,15 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <div class="row">
+  <div class="registerForm-container">
+    {{  form_start(form) }}
 
-      <div class="col s3 searchbar">
-        Searchbar
-      </div>
-
-      <div class="col s9 content">
-        Content
-      </div>
-
+    {{ form_widget(form) }}
+    
+    {{ form_end(form) }}
     </div>
 {% endblock %}
