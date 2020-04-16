@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -81,6 +82,22 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="datetime")
      */
     private $dateModified;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Item", mappedBy="user")
+     */    
+    private $items;
+
+     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bundle", mappedBy="user")
+     */    
+    private $bundles;
+
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+        $this->bundles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -248,5 +265,15 @@ class User implements UserInterface, \Serializable
         list($this->id,
         $this->username,
         $this->password) = unserialize($serialized);
+    }
+
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function getBundles()
+    {
+        return $this->bundles;
     }
 }

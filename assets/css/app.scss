@@ -19,6 +19,14 @@ body {
 
 nav {
     border-radius: 25px;
+    background-color: #1565c0;
+}
+
+.btn, .btn-large, .btn-small {
+    background-color: #1565c0;
+    &:hover {
+        background-color: #1976d2;
+    }
 }
 
 .col {

@@ -1,10 +1,8 @@
 <div class="content-container">
     Content
-    {% for item in items %}
-        <div >
-            {{ item.format }}
-            {{ item.title }}
-        </div>
-        
-    {% endfor %}
+         {% for item in items %}
+            <a href="{{ path('bundle', {'id': item.id}) }}">
+                {{ include('items/bundle.html.twig', {'item': item}) }}
+            </a>     
+        {% endfor %}
 </div>

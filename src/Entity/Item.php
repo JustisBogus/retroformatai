@@ -86,6 +86,18 @@ class Item
      */
     private $honeypot;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="items")
+     * @ORM\JoinColumn()
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Bundle", inversedBy="items")
+     * @ORM\JoinColumn()
+     */
+    private $bundle;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -258,5 +270,25 @@ class Item
         $this->honeypot = $honeypot;
 
         return $this;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+    
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function getBundle()
+    {
+        return $this->bundle;
+    }
+
+    public function setBundle($bundle)
+    {
+        $this->bundle = $bundle;
     }
 }
