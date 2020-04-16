@@ -19,6 +19,18 @@ class BundleRepository extends ServiceEntityRepository
         parent::__construct($registry, Bundle::class);
     }
 
+    public function findNewBundle($user)
+    {   
+        $qb = $this->createQueryBuilder('b');
+        
+        $qb->innerJoin('b.user', 'u', 'WITH', 'u = :user')
+            ->setParameter('user', $user)
+            ->setMaxResults(1)
+            ->orderBy('b.dateModified', 'desc');
+
+            return $qb->getQuery()->getSingleResult();
+    }
+
     // /**
     //  * @return Bundle[] Returns an array of Bundle objects
     //  */

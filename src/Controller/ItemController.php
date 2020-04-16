@@ -6,6 +6,7 @@ use App\Entity\Bundle;
 use App\Entity\Item;
 use App\Form\FilterType;
 use App\Form\ItemType;
+use App\Repository\BundleRepository;
 use App\Repository\ItemRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,25 +66,31 @@ class ItemController extends AbstractController
      */
     public function index(ItemRepository $itemRepository)
     {
-        $format = 'sega_genesis';
-        $items = $itemRepository->findFilteredItems($format);
+        //$format = 'sega_genesis';
+        //$items = $itemRepository->findFilteredItems($format);
+        $bundles = $this->entityManager->getRepository(Bundle::class)->findAll();
         
         $form = $this->formFactory->create(FilterType::class);
         return $this->render('layout/index.html.twig', 
             [
                 'form' => $form->createView(),
-                'items' => $items 
+                'bundles' => $bundles 
             ]);
     }
 
     /**
      * @Route("/add", name="item_add")
      */
-    public function add(Request $request)
+    public function add(BundleRepository $bundleRepository, Request $request)
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+        $bundle = $bundleRepository->findNewBundle($user);
+
         $item = new Item();
         $item->setDateCreated(new DateTime());
         $item->setDateModified(new DateTime());
+        $item->setUser($user);
+        $item->setBundle($bundle);
         $form = $this->formFactory->create(ItemType::class, $item);
         $form->handleRequest($request);
         $honeyPot = $item->getHoneyPot();
@@ -95,7 +102,6 @@ class ItemController extends AbstractController
             } else {
                 $this->flashBag->add('notice', 'Spam');
             }
-            //return new RedirectResponse($this->router->generate('index'));
         }
 
         return $this->render('layout/add.html.twig', ['form' => $form->createView()]);
@@ -123,8 +129,10 @@ class ItemController extends AbstractController
     /**
      * @Route("/bundle/{id}", name="bundle")
      */
-    public function show($id)
+    public function show(ItemRepository $itemRepository, $id)
     {
-        
+        $items = $itemRepository->findAllBundleItems($id);
+
+        return $this->render('items/bundle-content.html.twig', ['items' => $items ]);
     }
 }

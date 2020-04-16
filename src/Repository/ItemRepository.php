@@ -33,6 +33,16 @@ class ItemRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findAllBundleItems($id)
+    {
+        $qb = $this->createQueryBuilder('i');
+        
+        $qb->innerJoin('i.bundle', 'b', 'WITH', 'b.id = :id')
+            ->setParameter('id', $id);
+
+            return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */
