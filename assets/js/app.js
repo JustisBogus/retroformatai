@@ -1,6 +1,9 @@
 import '../../node_modules/materialize-css/dist/js/materialize.min.js';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import BundleCreator from './Components/BundleCreator';
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 
 /*
  * Welcome to your app's main JavaScript file!
@@ -15,15 +18,23 @@ import '../css/app.scss';
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
 
+const store = configureStore();
+
+const bundleCreator = (
+    <Provider store={store}>
+        <BundleCreator/>
+    </Provider>
+)
+
 class App extends Component {
     componentDidMount() {
         console.log("react component");
     }
     render() {
         return (
-            <div>
-                React Component
-            </div>
+                <div>
+                   {bundleCreator}
+                </div> 
         )       
     }
 }

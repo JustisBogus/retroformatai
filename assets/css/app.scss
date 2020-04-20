@@ -1,4 +1,5 @@
 @import '../../node_modules/materialize-css/dist/css/materialize.min.css';
+$shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
 
 body {
     //background-image: linear-gradient(90deg,#fff,#f2f2f2);
@@ -19,7 +20,15 @@ body {
 
 nav {
     border-radius: 25px;
-    background-color: #1565c0;
+    background-color:rgba(255, 255, 255, 0);
+    border: 1px solid #1565c0;
+    box-shadow: none;
+}
+
+nav li a {
+    color: rgba(0,0,0,0.87);
+    font-size: 24px;
+    font-weight: 700;
 }
 
 .btn, .btn-large, .btn-small {
@@ -38,7 +47,7 @@ nav {
 }
 
 .custom-nav-wrapper {
-    margin: 20px;
+    margin: 0px 20px 0px 20px;
     border-radius: 20px;
 }
 
@@ -58,13 +67,33 @@ select {
     display: block !important;
 }
 
-.searchbar-container, .content-container, .bundleContent-container {
+.searchbar-container, .content-container, .bundleContent-container,
+.bundleCreator-itemList, .bundleCreator-form, .bundle, .selectedBundle, .item
+{
     width: 100%;
-    height: 100vh;
     border-radius: 25px;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2)
+    box-shadow: $shadow;
+}
+
+.bundle, .selectedBundle {
+    height: 100px;
+    cursor: pointer;
+}
+
+.selectedBundle, .item {
+    box-shadow: none;
+    border: 1px solid #1565c0;
+}
+
+.item {
+    height: 200px;
+}
+
+.searchbar-container, .content-container, .bundleContent-container,
+.bundleCreator-itemList, .bundleCreator-form {
+    height: 100vh;
 }
 
 .bundleContent-container {
@@ -78,5 +107,17 @@ select {
     border-radius: 25px;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2)
+    box-shadow: $shadow;
 }
+
+.bundleList-Container {
+    margin: 0px 20px 0px 20px;
+    border: 1px solid #1565c0;
+    border-radius: 25px;
+}
+
+.bundleList-newBundleButton {
+    width: 56px;
+    margin: 20px auto 20px auto;
+}
+
