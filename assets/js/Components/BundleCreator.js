@@ -38,7 +38,7 @@ class BundleCreator extends Component {
                     key={item.id}
                     item={item}
                 />
-            })
+            });
         }
 
 

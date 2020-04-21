@@ -2,7 +2,7 @@
 
 {% block body %}
     {% if error %}
-        <div>  
+        <div class="notificationBox-error">
             {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
     {% endif %}
@@ -27,5 +27,8 @@
             <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
         </div>
     </form>
+    </div>
+     <div class="notificationBox">
+        Nesate užsiregistravę? <a href="{{ path('user_register')}}">Registruokitės!</a>
     </div>
 {% endblock %}
