@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -19,11 +20,13 @@ class User implements UserInterface, \Serializable
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("user")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user")
      */
     private $fullname;
 
@@ -31,6 +34,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(min=5, max=255)
+     * @Groups("user")
      */
     private $username;
 
@@ -55,31 +59,37 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min=5, max=255)
+     * @Groups("user")
      */
     private $location;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user")
      */
     private $reputation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user")
      */
     private $payment;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user")
      */
     private $photo;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("user")
      */
     private $dateCreated;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("user")
      */
     private $dateModified;
 

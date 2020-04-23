@@ -43,6 +43,30 @@ class ItemRepository extends ServiceEntityRepository
             return $qb->getQuery()->getResult();
     }
 
+    public function findAllItemsByUser($user)
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->innerJoin('i.user', 'u', 'WITH', 'u = :user')
+            ->setParameter('user', $user);
+
+            return $qb->getQuery()->getResult();
+    }
+
+    public function findAllItemsByUserAndBundle($user, $bundle)
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select('i')
+            ->where('i.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('i.bundle = :bundle')
+            ->setParameter('bundle', $bundle);
+
+            return $qb->getQuery()->getResult();
+    }
+
+
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */

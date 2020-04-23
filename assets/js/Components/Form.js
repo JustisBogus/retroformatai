@@ -197,7 +197,4 @@ const Form = (props) => {
     );
 }
 
-//  value={format}
-// onChange={handleChange}
-
 export default Form;

@@ -31,6 +31,16 @@ class BundleRepository extends ServiceEntityRepository
             return $qb->getQuery()->getSingleResult();
     }
 
+    public function findAllBundlesByUser($user)
+    {
+        $qb = $this->createQueryBuilder('b');
+
+        $qb->innerJoin('b.user', 'u', 'WITH', 'u = :user')
+            ->setParameter('user', $user);
+
+            return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Bundle[] Returns an array of Bundle objects
     //  */

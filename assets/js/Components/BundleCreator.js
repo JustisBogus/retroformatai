@@ -91,8 +91,11 @@ class BundleCreator extends Component {
     
     render() {
  
-        const { bundles, selectedBundle} = this.props;
-        let activeBundle = bundles.find(bundle => bundle.id === selectedBundle);
+        const { bundles, selectedBundle, isFetching } = this.props;
+        let activeBundle;
+        if ( bundles && !isFetching ) {
+           //activeBundle = bundles.find(bundle => bundle.id === selectedBundle);
+        }
         let activeBundleItemList;
     
         if (activeBundle && activeBundle.items) {

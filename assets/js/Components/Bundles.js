@@ -1,34 +1,40 @@
 import React, { Component } from 'react';
 import Bundle from './Bundle';
 import { connect } from 'react-redux';
-import { selectBundle } from '../store/actions/bundles';
+import { selectBundle, bundlesListFetch } from '../store/actions/bundles';
 
 const mapStateToProps = state => ({
     ...state.bundles
 });
 
 const mapDispatchToProps = {
-    selectBundle
+        selectBundle,
+        bundlesListFetch
 }
 
 class Bundles extends Component {
 
-    onSelectBundle(id) {
+    componentDidMount() {
+        this.props.bundlesListFetch();
+        console.log(this.props.bundles);
+    }
+
+    handleSelectBundle(id) {
         this.props.selectBundle(id);
     }
     
     render() {
 
-        const { bundles, selectedBundle } = this.props;
+        const { bundles, selectedBundle, isFetching } = this.props;
         let bundleList;
 
-        if (bundles) {
+        if (bundles && !isFetching) {
             bundleList = bundles.map(bundle => {
                 return <Bundle
                     key={bundle.id}
                     bundle={bundle}
                     selectedBundle={selectedBundle}
-                    selectBundle={this.onSelectBundle.bind(this)}
+                    selectBundle={this.handleSelectBundle.bind(this)}
                 />
             })
         }

@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BundleRepository")
@@ -14,36 +17,43 @@ class Bundle
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("bundle")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("bundle")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("bundle")
      */
     private $format;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("bundle")
      */
     private $conditionRating;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("bundle")
      */
     private $cover;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("bundle")
      */
     private $dateCreated;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("bundle")
      */
     private $dateModified;
 
@@ -60,6 +70,7 @@ class Bundle
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="bundles")
      * @ORM\JoinColumn()
+     * @Groups("user")
      */
     private $user;
 
@@ -145,11 +156,17 @@ class Bundle
         return $this->items;
     }
 
+    /**
+     * @return User
+     */
     public function getUser()
     {
         return $this->user;
     }
     
+    /**
+     * @param UserInterface $user
+     */
     public function setUser($user)
     {
         $this->user = $user;

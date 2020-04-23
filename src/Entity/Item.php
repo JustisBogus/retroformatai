@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
@@ -13,71 +16,85 @@ class Item
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("item")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("item")
      */
     private $format;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("item")
      */
     private $genre1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("item")
      */
     private $genre2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("item")
      */
     private $region;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("item")
      */
     private $releaseDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("item")
      */
     private $publisher;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("item")
      */
     private $title;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("item")
      */
     private $conditionRating;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("item")
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("item")
      */
     private $photo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("item")
      */
     private $cover;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("item")
      */
     private $dateCreated;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("item")
      */
     private $dateModified;
 
@@ -89,12 +106,14 @@ class Item
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="items")
      * @ORM\JoinColumn()
+     * @Groups("user")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Bundle", inversedBy="items")
      * @ORM\JoinColumn()
+     * @Groups("bundle")
      */
     private $bundle;
 
@@ -272,12 +291,18 @@ class Item
         return $this;
     }
 
+    /**
+     * @return User
+     */
     public function getUser()
     {
         return $this->user;
     }
     
-    public function setUser($user)
+    /**
+    * @param UserInterface $user
+    */
+    public function setUser(UserInterface $user)
     {
         $this->user = $user;
     }

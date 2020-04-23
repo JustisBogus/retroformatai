@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Bundle;
 use App\Entity\Item;
+use App\Entity\User;
 use App\Form\FilterType;
 use App\Form\ItemType;
 use App\Repository\BundleRepository;
@@ -17,7 +18,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/")
@@ -49,16 +54,22 @@ class ItemController extends AbstractController
      */
     private $tokenStorage;
 
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
     public function __construct(
         FormFactoryInterface $formFactory, FlashBagInterface $flashBag, 
         RouterInterface $router, EntityManagerInterface $entityManager,
-        TokenStorageInterface $tokenStorage)
+        TokenStorageInterface $tokenStorage, SerializerInterface $serializer)
     {
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
         $this->router = $router;
         $this->entityManager = $entityManager;
         $this->tokenStorage = $tokenStorage;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -74,8 +85,50 @@ class ItemController extends AbstractController
         return $this->render('layout/index.html.twig', 
             [
                 'form' => $form->createView(),
-                'bundles' => $bundles 
+                'bundles' => $bundles,
             ]);
+    }
+
+     /**
+     * @Route("/api/items", name="api_items")
+     */
+    public function items(ItemRepository $itemRepository)
+    {
+        $serializer = $this->serializer;
+        $tokenStorage = $this->tokenStorage;
+        $bundle = 1;
+        $user = $tokenStorage->getToken()->getUser();
+        $items = $itemRepository->findAllItemsByUserAndBundle($user, $bundle);
+
+        $json = $serializer->serialize(
+            $items,
+            'json', ['groups' => ['user', 'bundle', 'item']]
+        );
+
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @Route("/api/bundles", name="api_bundles", methods={"GET"})
+     */
+    public function bundles(BundleRepository $bundleRepository)
+    {
+        $serializer = $this->serializer;
+        $tokenStorage = $this->tokenStorage;
+        $user = $tokenStorage->getToken()->getUser();
+        $bundles = $bundleRepository->findAllBundlesByUser($user);
+
+        $json = $serializer->serialize(
+            $bundles,
+            'json', ['groups' => ['user', 'bundle']]
+        );
+
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

@@ -5,9 +5,9 @@ import { newItemEmpty } from './newItemEmpty';
 const initialState = {
     clicked: false,
     bundles: bundlesData,
-    selectedBundle: null,
+    selectedBundle: bundlesData[bundlesData.length - 1].id,
     newItem: newItemEmpty,
-    updated: false,
+    isFetching: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -17,6 +17,23 @@ const reducer = (state = initialState, action) => {
                 ...state,
                     clicked: action.buttonClicked
             };
+        case actionTypes.BUNDLES_LIST_REQUEST:
+            return {
+                ...state,
+                    isFetching: true
+            };
+        case actionTypes.BUNDLES_LIST_RECEIVED:
+            return {
+                ...state,
+                    bundles: action.data,
+                    isFetching: false
+            };
+        case actionTypes.BUNDLES_LIST_ERROR:
+            return {
+                ...state,
+                    isFetching: false,
+                    bundles: bundlesData
+            }
         case actionTypes.SELECT_BUNDLE:
             return {
                 ...state,
