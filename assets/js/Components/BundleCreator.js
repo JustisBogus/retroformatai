@@ -91,15 +91,15 @@ class BundleCreator extends Component {
     
     render() {
  
-        const { bundles, selectedBundle, isFetching } = this.props;
+        const { bundles, selectedBundle, isFetchingBundles, isFetchingItems, items } = this.props;
         let activeBundle;
-        if ( bundles && !isFetching ) {
+        if ( bundles && !isFetchingBundles ) {
            //activeBundle = bundles.find(bundle => bundle.id === selectedBundle);
         }
         let activeBundleItemList;
     
-        if (activeBundle && activeBundle.items) {
-            activeBundleItemList = activeBundle.items.map(item => {
+        if (items && !isFetchingItems) {
+            activeBundleItemList = items.map(item => {
                 return <Item
                     key={item.id}
                     item={item}

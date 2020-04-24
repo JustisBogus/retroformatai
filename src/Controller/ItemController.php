@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Bundle;
 use App\Entity\Item;
-use App\Entity\User;
 use App\Form\FilterType;
 use App\Form\ItemType;
 use App\Repository\BundleRepository;
@@ -18,8 +17,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,19 +87,21 @@ class ItemController extends AbstractController
     }
 
      /**
-     * @Route("/api/items", name="api_items")
+     * @Route("/api/items/{bundle}", name="api_items", methods={"GET"})
      */
-    public function items(ItemRepository $itemRepository)
+    public function items($bundle, ItemRepository $itemRepository, Request $request)
     {
         $serializer = $this->serializer;
         $tokenStorage = $this->tokenStorage;
-        $bundle = 1;
         $user = $tokenStorage->getToken()->getUser();
         $items = $itemRepository->findAllItemsByUserAndBundle($user, $bundle);
 
         $json = $serializer->serialize(
             $items,
-            'json', ['groups' => ['user', 'bundle', 'item']]
+            'json', [
+                'groups' => ['user', 'bundle', 'item'],
+                'bundle' => $bundle
+            ]
         );
 
         $response = new Response($json);

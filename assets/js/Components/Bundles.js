@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Bundle from './Bundle';
 import { connect } from 'react-redux';
-import { selectBundle, bundlesListFetch } from '../store/actions/bundles';
+import { selectBundle, bundlesListFetch, itemsListFetch } from '../store/actions/bundles';
 
 const mapStateToProps = state => ({
     ...state.bundles
@@ -9,26 +9,29 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
         selectBundle,
-        bundlesListFetch
+        bundlesListFetch,
+        itemsListFetch
 }
 
 class Bundles extends Component {
 
     componentDidMount() {
         this.props.bundlesListFetch();
-        console.log(this.props.bundles);
     }
 
     handleSelectBundle(id) {
-        this.props.selectBundle(id);
+        const { itemsListFetch, selectBundle } = this.props;
+        itemsListFetch(id);
+        selectBundle(id);
+        console.log(this.props.items);
     }
     
     render() {
 
-        const { bundles, selectedBundle, isFetching } = this.props;
+        const { bundles, selectedBundle, isFetchingBundles } = this.props;
         let bundleList;
 
-        if (bundles && !isFetching) {
+        if (bundles && !isFetchingBundles) {
             bundleList = bundles.map(bundle => {
                 return <Bundle
                     key={bundle.id}
