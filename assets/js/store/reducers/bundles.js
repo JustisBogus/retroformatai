@@ -66,7 +66,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ADD_NEW_ITEM:
             return {
                 ...state,
-                    bundles: action.bundles,
+                    items: action.items,
                     newItem: action.emptyItem
             };
         default:

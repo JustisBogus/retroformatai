@@ -71,10 +71,10 @@ export const createNewItem = (item) => {
     };
 };
 
-export const addNewItem = (bundles, emptyItem) => {
+export const addNewItem = (items, emptyItem) => {
     return {
         type: ADD_NEW_ITEM,
-        bundles,
+        items,
         emptyItem
     };
 };

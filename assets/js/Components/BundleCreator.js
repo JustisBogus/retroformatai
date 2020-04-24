@@ -69,10 +69,10 @@ class BundleCreator extends Component {
     }
     
     handleItemAdd() {
-        const { bundles, selectedBundle, newItem, addNewItem} = this.props;
-        let activeBundle = bundles.find(bundle => bundle.id === selectedBundle);
+        const { bundles, newItem, addNewItem, items} = this.props;
         let item = newItem;
-        item.id = activeBundle.items.length + 1;
+        let addItems = items;
+        item.id = items.length + 1;
         let emptyItem = {
             id: item.id,
             title: "",
@@ -84,18 +84,14 @@ class BundleCreator extends Component {
             price: item.price,
             comment: ""
         }
-        activeBundle.items = activeBundle.items.concat(item);
-        addNewItem(bundles, emptyItem);
+        addItems = addItems.concat(item);
+        addNewItem(addItems, emptyItem);
         console.log(bundles);
     }
     
     render() {
  
-        const { bundles, selectedBundle, isFetchingBundles, isFetchingItems, items } = this.props;
-        let activeBundle;
-        if ( bundles && !isFetchingBundles ) {
-           //activeBundle = bundles.find(bundle => bundle.id === selectedBundle);
-        }
+        const { isFetchingItems, items } = this.props;
         let activeBundleItemList;
     
         if (items && !isFetchingItems) {
