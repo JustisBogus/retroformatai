@@ -4,7 +4,8 @@ import { click } from '../store/actions/bundles';
 import Bundles from './Bundles';
 import Item from './Item';
 import Form from './Form';
-import { createNewItem, addNewItem } from '../store/actions/bundles';
+import { createNewItem, saveNewItem } from '../store/actions/bundles';
+import Spinner from './Spinner';
 
 const mapStateToProps = state => ({
     ...state.bundles
@@ -13,7 +14,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     click,
     createNewItem,
-    addNewItem
+    saveNewItem
 }
 
 class BundleCreator extends Component {
@@ -28,7 +29,7 @@ class BundleCreator extends Component {
     }
 
     handleFormInput(field, value) {
-        let { newItem, createNewItem } = this.props;
+        let { newItem, createNewItem, selectedBundle } = this.props;
         let item = {
                 id: 0,
                 title: newItem.title,
@@ -38,7 +39,8 @@ class BundleCreator extends Component {
                 conditionRating: newItem.conditionRating,
                 publisher: newItem.publisher,
                 price: newItem.price,
-                comment: newItem.comment
+                comment: newItem.comment,
+                selectedBundle: selectedBundle
             }
         if (field === "title") {
             item.title = value
@@ -69,10 +71,17 @@ class BundleCreator extends Component {
     }
     
     handleItemAdd() {
-        const { bundles, newItem, addNewItem, items} = this.props;
+        const { bundles, newItem, items, selectedBundle, saveNewItem } = this.props;
         let item = newItem;
-        let addItems = items;
-        item.id = items.length + 1;
+        let addItems;
+        if (items) {
+            addItems = items;
+            item.id = items.length + 1;
+        }
+        if (!items) {
+            addItems = [];
+            item.id = 1;
+        }
         let emptyItem = {
             id: item.id,
             title: "",
@@ -85,7 +94,7 @@ class BundleCreator extends Component {
             comment: ""
         }
         addItems = addItems.concat(item);
-        addNewItem(addItems, emptyItem);
+        saveNewItem(item, addItems, emptyItem, selectedBundle);
         console.log(bundles);
     }
     
@@ -94,6 +103,14 @@ class BundleCreator extends Component {
         const { isFetchingItems, items } = this.props;
         let activeBundleItemList;
     
+        if (isFetchingItems) {
+            activeBundleItemList = (
+                <div className="spinnerContainer">
+                    <Spinner/>
+                </div>   
+            )
+        }
+
         if (items && !isFetchingItems) {
             activeBundleItemList = items.map(item => {
                 return <Item

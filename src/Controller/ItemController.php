@@ -126,12 +126,35 @@ class ItemController extends AbstractController
 
         $response = new Response($json);
         $response->headers->set('Content-Type', 'application/json');
-
         return $response;
     }
 
     /**
-     * @Route("/add", name="item_add")
+     * @Route("/api/additem", name="item_add", methods={"POST"})
+     */
+    public function addItem(Request $request)
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+        $serializer = $this->serializer;
+        $item = $serializer->deserialize($request->getContent(), Item::class, 'json');
+        $requestBundle = json_decode($request->getContent(), true);
+        $bundleId = isset($requestBundle['selectedBundle']) ? $requestBundle['selectedBundle'] : null;
+        $bundle = $this->entityManager->getRepository(Bundle::class)->find($bundleId);
+        $item->setUser($user);
+        $item->setBundle($bundle);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($item);
+        $em->persist($bundle);
+        $em->flush();
+        $json = $serializer->serialize(
+            $item,
+            'json', ['groups' => ['user', 'bundle', 'item']]
+        );
+        return new Response($json);
+    }
+
+    /**
+     * @Route("/add", name="bundle_creator")
      */
     public function add(BundleRepository $bundleRepository, Request $request)
     {
@@ -155,12 +178,11 @@ class ItemController extends AbstractController
                 $this->flashBag->add('notice', 'Spam');
             }
         }
-
         return $this->render('layout/add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @Route("/addbundle", name="bundle_add")
+     * @Route("/api/addbundle", name="bundle_add")
      */
     public function addBundle()
     {
@@ -177,6 +199,15 @@ class ItemController extends AbstractController
         }
             $this->flashBag->add('notice', 'Access denied');
     }
+
+    /**
+     * @Route("/api/editbundle/{id}", name="bundle_edit")
+     */
+    public function editBundle()
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+    }
+
 
     /**
      * @Route("/bundle/{id}", name="bundle")

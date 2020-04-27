@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Bundle from './Bundle';
 import { connect } from 'react-redux';
 import { selectBundle, bundlesListFetch, itemsListFetch } from '../store/actions/bundles';
+import Spinner from './Spinner';
 
 const mapStateToProps = state => ({
     ...state.bundles
@@ -31,6 +32,14 @@ class Bundles extends Component {
         const { bundles, selectedBundle, isFetchingBundles } = this.props;
         let bundleList;
 
+        if (isFetchingBundles) {
+            bundleList = (
+                <div className="spinnerContainer">
+                    <Spinner/>
+                </div>
+            )
+        }
+
         if (bundles && !isFetchingBundles) {
             bundleList = bundles.map(bundle => {
                 return <Bundle
@@ -48,8 +57,8 @@ class Bundles extends Component {
                     {bundleList} 
                 </div>
                     <div className="bundleList-newBundleButton">
-                        <div className="btn-floating btn-large waves-effect waves-light blue">
-                            +
+                        <div className="waves-effect waves-light btn blue">
+                            Naujas
                         </div>  
                     </div>     
             </div>

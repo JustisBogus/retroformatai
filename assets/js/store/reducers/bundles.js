@@ -9,7 +9,7 @@ const initialState = {
     selectedBundle: bundlesData[bundlesData.length - 1].id,
     newItem: newItemEmpty,
     isFetchingBundles: false,
-    isFerchingItems: false
+    isFetchingItems: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -30,29 +30,34 @@ const reducer = (state = initialState, action) => {
                     bundles: action.data,
                     isFetchingBundles: false
             };
+        case actionTypes.SET_ACTIVE_BUNDLE:
+            return {
+                ...state,
+                    selectedBundle: action.activeBundle.id
+            };
         case actionTypes.BUNDLES_LIST_ERROR:
             return {
                 ...state,
                     isFetchingBundles: false,
                     bundles: bundlesData
-            }
+            };
         case actionTypes.ITEMS_LIST_REQUEST:
             return {
                 ...state,
-                    isFerchingItems:true
+                    isFetchingItems:true
             };
         case actionTypes.ITEMS_LIST_RECEIVED:
             return {
                 ...state,
                     items: action.data,
-                    isFerchingItems: false,
-            }
+                    isFetchingItems: false,
+            };
         case actionTypes.ITEMS_LIST_ERROR:
             return {
                 ...state,
-                    isFerchingItems: false,
+                    isFetchingItems: false,
                     items: null
-            }
+            };
         case actionTypes.SELECT_BUNDLE:
             return {
                 ...state,
