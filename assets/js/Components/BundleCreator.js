@@ -100,6 +100,7 @@ class BundleCreator extends Component {
     handleListBundle() {
         const { selectedBundle, listBundle } = this.props;
         listBundle(selectedBundle);
+        console.log('list bundle clicked');
     }
     
     render() {
@@ -143,7 +144,7 @@ class BundleCreator extends Component {
                     </div>
                     <div className="col s6">
                         <div className="bundleCreator-itemList">
-                            <div onClick={this.handleListBundle.bind(this)}>
+                            <div className="bundleCreator-listButton" onClick={() => this.handleListBundle()}>
                                 Paskelbti komplektą
                             </div>
                             {activeBundleItemList}

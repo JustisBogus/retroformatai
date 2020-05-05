@@ -114,9 +114,9 @@ export const saveNewItem = (item, items, emptyItem, selectedBundle) => {
 
 export const listBundle = (selectedBundle) => {
     return (dispatch) => {
-        return requests.put(`/api/listBundle/${selectedBundle}`, {
+        return requests.put(`/api/listbundle/${selectedBundle}`, {
             listed: true,
-            dateModified: new date()
+            dateModified: new Date()
         })
     };
 };

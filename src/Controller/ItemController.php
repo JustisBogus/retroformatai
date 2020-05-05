@@ -166,7 +166,7 @@ class ItemController extends AbstractController
         $bundle = $this->getDoctrine()->getRepository(Bundle::class)->find($id);
         $data = json_decode($request->getContent(), true);
         $bundle->setListed($data['listed']);
-        $bundle->setModifiedDate(new DateTime($data['dateModified']));
+        $bundle->setDateModified(new DateTime($data['dateModified']));
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($bundle);
