@@ -24,7 +24,7 @@ class Bundles extends Component {
         const { itemsListFetch, selectBundle } = this.props;
         itemsListFetch(id);
         selectBundle(id);
-        console.log(this.props.items);
+        console.log(this.props.bundles);
     }
     
     render() {

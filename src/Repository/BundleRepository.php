@@ -19,6 +19,15 @@ class BundleRepository extends ServiceEntityRepository
         parent::__construct($registry, Bundle::class);
     }
 
+    public function findListedBundles()
+    {
+        $qb = $this->createQueryBuilder('b');
+
+        $qb->andWhere('b.listed = true');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findNewBundle($user)
     {   
         $qb = $this->createQueryBuilder('b');

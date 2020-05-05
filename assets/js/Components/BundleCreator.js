@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { click } from '../store/actions/bundles';
 import Bundles from './Bundles';
 import Item from './Item';
 import Form from './Form';
-import { createNewItem, saveNewItem } from '../store/actions/bundles';
+import {click, createNewItem, saveNewItem, listBundle } from '../store/actions/bundles';
 import Spinner from './Spinner';
 
 const mapStateToProps = state => ({
@@ -14,7 +13,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     click,
     createNewItem,
-    saveNewItem
+    saveNewItem,
+    listBundle
 }
 
 class BundleCreator extends Component {
@@ -71,7 +71,7 @@ class BundleCreator extends Component {
     }
     
     handleItemAdd() {
-        const { bundles, newItem, items, selectedBundle, saveNewItem } = this.props;
+        const { newItem, items, selectedBundle, saveNewItem } = this.props;
         let item = newItem;
         let addItems;
         if (items) {
@@ -95,7 +95,11 @@ class BundleCreator extends Component {
         }
         addItems = addItems.concat(item);
         saveNewItem(item, addItems, emptyItem, selectedBundle);
-        console.log(bundles);
+    }
+
+    handleListBundle() {
+        const { selectedBundle, listBundle } = this.props;
+        listBundle(selectedBundle);
     }
     
     render() {
@@ -139,6 +143,9 @@ class BundleCreator extends Component {
                     </div>
                     <div className="col s6">
                         <div className="bundleCreator-itemList">
+                            <div onClick={this.handleListBundle.bind(this)}>
+                                Paskelbti komplektą
+                            </div>
                             {activeBundleItemList}
                         </div>     
                     </div>

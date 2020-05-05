@@ -20,6 +20,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @Route("/")
@@ -72,11 +74,12 @@ class ItemController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(ItemRepository $itemRepository)
+    public function index(BundleRepository $bundleRepository)
     {
         //$format = 'sega_genesis';
         //$items = $itemRepository->findFilteredItems($format);
-        $bundles = $this->entityManager->getRepository(Bundle::class)->findAll();
+        $bundles = $bundleRepository->findListedBundles();
+        //$bundles = $this->entityManager->getRepository(Bundle::class)->findAll();
         
         $form = $this->formFactory->create(FilterType::class);
         return $this->render('layout/index.html.twig', 
@@ -150,6 +153,30 @@ class ItemController extends AbstractController
             $item,
             'json', ['groups' => ['user', 'bundle', 'item']]
         );
+        return new Response($json);
+    }
+
+    /**
+     * @Route("/api/listbundle/{id}", name="bundle_list", requirements={"id"="\d+"}, methods={"PUT"})
+     * @ParamConverter("bundle", class="App:Bundle")
+     */
+    public function bundleList(Request $request, $id)
+    {
+        $serializer=$this->serializer;
+        $bundle = $this->getDoctrine()->getRepository(Bundle::class)->find($id);
+        $data = json_decode($request->getContent(), true);
+        $bundle->setListed($data['listed']);
+        $bundle->setModifiedDate(new DateTime($data['dateModified']));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($bundle);
+        $em->flush();
+
+        $json = $serializer->serialize(
+            $bundle,
+            'json', ['groups' => ['user', 'bundle', 'item']]
+        );
+
         return new Response($json);
     }
 

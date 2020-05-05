@@ -46,6 +46,12 @@ class Bundle
     private $cover;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Groups("bundle")
+     */
+    private $listed;
+
+    /**
      * @ORM\Column(type="datetime")
      * @Groups("bundle")
      */
@@ -123,6 +129,18 @@ class Bundle
     public function setCover(?string $cover): self
     {
         $this->cover = $cover;
+
+        return $this;
+    }
+
+    public function getListed()
+    {
+        return $this->listed;
+    }
+
+    public function setListed($listed)
+    {
+        $this->listed = $listed;
 
         return $this;
     }
