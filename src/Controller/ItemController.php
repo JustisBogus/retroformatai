@@ -211,10 +211,11 @@ class ItemController extends AbstractController
     /**
      * @Route("/api/addbundle", name="bundle_add")
      */
-    public function addBundle()
+    public function addBundle(BundleRepository $bundleRepository, Request $request)
     {
         $user = $this->tokenStorage->getToken()->getUser();
-        if ($user) {
+        $bundle = $bundleRepository->findNewBundle($user);
+        if ($user && $bundle) {
             $bundle = new Bundle();
             $bundle->setDateCreated(new DateTime());
             $bundle->setDateModified(new DateTime());
