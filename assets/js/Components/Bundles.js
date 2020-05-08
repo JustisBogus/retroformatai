@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Bundle from './Bundle';
 import { connect } from 'react-redux';
-import { selectBundle, bundlesListFetch, itemsListFetch } from '../store/actions/bundles';
+import { selectBundle, bundlesListFetch, itemsListFetch, saveNewBundle, updateBundle } from '../store/actions/bundles';
 import Spinner from './Spinner';
 
 const mapStateToProps = state => ({
@@ -11,7 +11,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
         selectBundle,
         bundlesListFetch,
-        itemsListFetch
+        itemsListFetch,
+        saveNewBundle,
+        updateBundle
 }
 
 class Bundles extends Component {
@@ -27,6 +29,36 @@ class Bundles extends Component {
         console.log(this.props.bundles);
     }
     
+    handleNewBundle() {
+        const { bundles, saveNewBundle } = this.props;
+        let newBundle = {
+            id: bundles.length + 1,
+            name: 'Naujas komplektas',
+            format: '',
+            condition_rating: 5,
+            cover: null,
+            dateCreated: new Date(),
+            dateModified: new Date(),
+            items: [ ]
+        }
+        saveNewBundle(newBundle);
+    }
+
+    /*
+    handleBundleInput(id, field, value) {
+        const { bundles, updateBundle } = this.props;
+        let allBundles = bundles;
+        let activeBundle = allBundles.find(bundle => bundle.id === id);
+        if (field === "name") {
+            activeBundle.name = value;
+        }
+        if (field === "format") {
+            activeBundle.format = value;
+        }
+        updateBundle(allBundles);
+    }
+    */
+
     render() {
 
         const { bundles, selectedBundle, isFetchingBundles } = this.props;
@@ -51,15 +83,19 @@ class Bundles extends Component {
             })
         }
 
+        if (!bundles && !isFetchingBundles) {
+            bundleList = <div>Dar neturite sukurę komplektų spauskite "Naujas" sukurti</div>
+        }
+
         return (
             <div className="bundleList-Container"> 
                 <div className="row">
                     {bundleList} 
                 </div>
                     <div className="bundleList-newBundleButton">
-                        <div className="waves-effect waves-light btn blue">
+                        <div onClick={() => this.handleNewBundle()} className="waves-effect waves-light btn blue">
                             Naujas
-                        </div>  
+                        </div>
                     </div>     
             </div>
         );

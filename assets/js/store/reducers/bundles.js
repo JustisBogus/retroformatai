@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { bundlesData } from './bundlesData';
+import { bundlesData, initialBundleData } from './bundlesData';
 import { newItemEmpty } from './newItemEmpty';
 
 const initialState = {
@@ -39,7 +39,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                     isFetchingBundles: false,
-                    bundles: bundlesData
+                    bundles: null
             };
         case actionTypes.ITEMS_LIST_REQUEST:
             return {
@@ -74,6 +74,16 @@ const reducer = (state = initialState, action) => {
                     items: action.items,
                     newItem: action.emptyItem
             };
+        case actionTypes.ADD_NEW_BUNDLE:
+            return {
+                ...state,
+                    bundles: state.bundles.concat(action.newBundle)
+            }
+        case actionTypes.UPDATE_BUNDLE:
+            return {
+                ...state,
+                    bundles: action.updatedBundle
+            }
         default:
             return state;
     };

@@ -80,3 +80,16 @@ export const bundlesData = [
         dateModified: '2020-04-16 17:08:15'
     }
 ]
+
+export const initialBundleData = [
+    {
+        id: 1,
+        name: 'Naujas komplektas',
+        format: '',
+        condition_rating: 5,
+        cover: null,
+        dateCreated: new Date(),
+        dateModified: new Date(),
+        items: [ ]
+    }
+]

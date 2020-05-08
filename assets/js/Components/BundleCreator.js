@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Bundles from './Bundles';
 import Item from './Item';
 import Form from './Form';
-import {click, createNewItem, saveNewItem, listBundle } from '../store/actions/bundles';
+import { click, createNewItem, saveNewItem, listBundle } from '../store/actions/bundles';
 import Spinner from './Spinner';
 
 const mapStateToProps = state => ({

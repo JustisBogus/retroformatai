@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @Route("/")
@@ -121,6 +120,7 @@ class ItemController extends AbstractController
         $tokenStorage = $this->tokenStorage;
         $user = $tokenStorage->getToken()->getUser();
         $bundles = $bundleRepository->findAllBundlesByUser($user);
+        //$bundle = $bundleRepository->findNewBundle($user);
 
         $json = $serializer->serialize(
             $bundles,
@@ -157,6 +157,25 @@ class ItemController extends AbstractController
     }
 
     /**
+     * @Route("api/addbundle", name="bundle_add", methods={"POST"})
+     */
+    public function addBundle(Request $request)
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+        $serializer = $this->serializer;
+        $bundle = $serializer->deserialize($request->getContent(), Bundle::class, 'json');
+        $bundle->setUser($user);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($bundle);
+        $em->flush();
+        $json = $serializer->serialize(
+            $bundle,
+            'json', ['groups' => ['user', 'bundle', 'item']]
+        );
+        return new Response($json);
+    }
+
+    /**
      * @Route("/api/listbundle/{id}", name="bundle_list", requirements={"id"="\d+"}, methods={"PUT"})
      * @ParamConverter("bundle", class="App:Bundle")
      */
@@ -186,13 +205,24 @@ class ItemController extends AbstractController
     public function add(BundleRepository $bundleRepository, Request $request)
     {
         $user = $this->tokenStorage->getToken()->getUser();
-        $bundle = $bundleRepository->findNewBundle($user);
+        $bundles = $bundleRepository->findAllBundlesByUser($user);
+        if (!$bundles) {
+            $initialBundle = new Bundle();
+            $initialBundle->setName("Naujas Komplektas");
+            $initialBundle->setFormat("Formatas");
+            $initialBundle->setListed(false);
+            $initialBundle->setDateCreated(new DateTime());
+            $initialBundle->setDateModified(new DateTime());
+            $initialBundle->setUser($user);
+            $this->entityManager->persist($initialBundle);
+            $this->entityManager->flush();
+        }
 
         $item = new Item();
         $item->setDateCreated(new DateTime());
         $item->setDateModified(new DateTime());
         $item->setUser($user);
-        $item->setBundle($bundle);
+        //$item->setBundle($bundle);
         $form = $this->formFactory->create(ItemType::class, $item);
         $form->handleRequest($request);
         $honeyPot = $item->getHoneyPot();
@@ -208,9 +238,9 @@ class ItemController extends AbstractController
         return $this->render('layout/add.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
+    /*
      * @Route("/api/addbundle", name="bundle_add")
-     */
+
     public function addBundle(BundleRepository $bundleRepository, Request $request)
     {
         $user = $this->tokenStorage->getToken()->getUser();
@@ -227,6 +257,7 @@ class ItemController extends AbstractController
         }
             $this->flashBag->add('notice', 'Access denied');
     }
+    */
 
     /**
      * @Route("/api/editbundle/{id}", name="bundle_edit")

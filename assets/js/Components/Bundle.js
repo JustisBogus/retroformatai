@@ -7,7 +7,7 @@ const [state, toggle] = useState(true)
 const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 1000 } })
 
     return (
-        <div className="col s2" onClick={() => {props.selectBundle(props.bundle.id), toggle(!state)}}>
+        <div className="col s3" onClick={() => {props.selectBundle(props.bundle.id), toggle(!state)}}>
             <animated.div
                 style={{
                 opacity: x.interpolate({ range: [1, 1], output: [1, 1] }),
@@ -21,9 +21,10 @@ const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 
                     <div className={props.bundle.id === props.selectedBundle ? "selectedBundle" : "bundle"}>
                         {props.bundle.name}
                         {props.bundle.format}
-                        {props.bundle.listed ? "Paskelbtas" : "Nepaskelbtas"}
+                        {props.bundle.listed ? "Paskelbtas " : "Nepaskelbtas "} 
+                        Neišsaugotas
                     </div>
-            </animated.div>         
+            </animated.div>
         </div>
     );
 }

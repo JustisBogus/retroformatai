@@ -1,7 +1,7 @@
 import { CLICK, SELECT_BUNDLE, CREATE_NEW_ITEM, ADD_NEW_ITEM,
     BUNDLES_LIST_RECEIVED, BUNDLES_LIST_ERROR, 
     BUNDLES_LIST_REQUEST, ITEMS_LIST_RECEIVED, 
-    ITEMS_LIST_ERROR, ITEMS_LIST_REQUEST, SET_ACTIVE_BUNDLE } from "./actionTypes"
+    ITEMS_LIST_ERROR, ITEMS_LIST_REQUEST, SET_ACTIVE_BUNDLE, ADD_NEW_BUNDLE, UPDATE_BUNDLE } from "./actionTypes"
 import { requests } from '../../agent';
 
 export const click = (buttonClicked) => {
@@ -117,6 +117,38 @@ export const listBundle = (selectedBundle) => {
         return requests.put(`/api/listbundle/${selectedBundle}`, {
             listed: true,
             dateModified: new Date()
+        })
+    };
+};
+
+export const addNewBundle = (newBundle) => {
+    return {
+        type: ADD_NEW_BUNDLE,
+        newBundle
+    };
+};
+
+export const updateBundle = (updatedBundle) => {
+    return {
+        type: UPDATE_BUNDLE,
+        updatedBundle
+    };
+};
+
+export const saveNewBundle = (newBundle) => {
+    return (dispatch) => {
+        return requests.post(`/api/addbundle`, {
+            id: newBundle.id,
+            name: "Tuščias komplektas",
+            format: "Formatas",
+            conditionRating: "5",
+            dateCreated: new Date(),
+            dateModified: new Date(),
+            listed: false
+        })
+        .then(dispatch(addNewBundle(newBundle)))
+        .catch(error => {
+            console.log(error)
         })
     };
 };

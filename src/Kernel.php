@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Nelmio\CorsBundle\NelmioCorsBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -22,7 +23,7 @@ class Kernel extends BaseKernel
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
             }
-        }
+        }     
     }
 
     public function getProjectDir(): string
