@@ -141,7 +141,7 @@ export const saveNewBundle = (newBundle) => {
             id: newBundle.id,
             name: "Tuščias komplektas",
             format: "Formatas",
-            conditionRating: "5",
+            conditionRating: 5,
             dateCreated: new Date(),
             dateModified: new Date(),
             listed: false

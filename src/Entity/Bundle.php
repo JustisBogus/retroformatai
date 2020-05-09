@@ -34,10 +34,16 @@ class Bundle
     private $format;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", length=255, nullable=true)
      * @Groups("bundle")
      */
     private $conditionRating;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups("bundle")
+     */
+    private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -109,14 +115,26 @@ class Bundle
         return $this;
     }
 
-    public function getConditionRating(): ?string
+    public function getConditionRating(): ?int
     {
         return $this->conditionRating;
     }
 
-    public function setConditionRating(?string $conditionRating): self
+    public function setConditionRating(?int $conditionRating): self
     {
         $this->conditionRating = $conditionRating;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }

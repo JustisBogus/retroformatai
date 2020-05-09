@@ -124,7 +124,7 @@ class ItemController extends AbstractController
 
         $json = $serializer->serialize(
             $bundles,
-            'json', ['groups' => ['user', 'bundle']]
+            'json', ['groups' => ['user', 'bundle', 'item']]
         );
 
         $response = new Response($json);
