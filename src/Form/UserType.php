@@ -47,7 +47,9 @@ class UserType extends AbstractType
                     'constraints' => new IsTrue(),
                     'label' => 'Sutinku su privatumo politika *',
                 ])
-                ->add('Register', SubmitType::class, ['label' => 'Registruotis']);
+                ->add('Register', SubmitType::class, [
+                    'label' => 'Registruotis'
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

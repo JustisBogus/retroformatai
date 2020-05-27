@@ -205,23 +205,26 @@ class ItemController extends AbstractController
     public function add(BundleRepository $bundleRepository, Request $request)
     {
         $user = $this->tokenStorage->getToken()->getUser();
-        $bundles = $bundleRepository->findAllBundlesByUser($user);
-        if (!$bundles) {
-            $initialBundle = new Bundle();
-            $initialBundle->setName("Naujas Komplektas");
-            $initialBundle->setFormat("Formatas");
-            $initialBundle->setListed(false);
-            $initialBundle->setDateCreated(new DateTime());
-            $initialBundle->setDateModified(new DateTime());
-            $initialBundle->setUser($user);
-            $this->entityManager->persist($initialBundle);
-            $this->entityManager->flush();
+        $securityContext = $this->container->get('security.authorization_checker');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $bundles = $bundleRepository->findAllBundlesByUser($user);
+            if (!$bundles) {
+                $initialBundle = new Bundle();
+                $initialBundle->setName("Naujas Komplektas");
+                $initialBundle->setFormat("Formatas");
+                $initialBundle->setListed(false);
+                $initialBundle->setDateCreated(new DateTime());
+                $initialBundle->setDateModified(new DateTime());
+                $initialBundle->setUser($user);
+                $this->entityManager->persist($initialBundle);
+                $this->entityManager->flush();
+            }
         }
-
+       
         $item = new Item();
         $item->setDateCreated(new DateTime());
         $item->setDateModified(new DateTime());
-        $item->setUser($user);
+        //$item->setUser($user);
         //$item->setBundle($bundle);
         $form = $this->formFactory->create(ItemType::class, $item);
         $form->handleRequest($request);
@@ -235,7 +238,10 @@ class ItemController extends AbstractController
                 $this->flashBag->add('notice', 'Spam');
             }
         }
-        return $this->render('layout/add.html.twig', ['form' => $form->createView()]);
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->render('layout/add.html.twig', ['form' => $form->createView()]);
+        }
+            return new RedirectResponse($this->router->generate('security_login'));
     }
 
     /*

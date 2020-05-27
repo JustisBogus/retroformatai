@@ -17,7 +17,7 @@ const Form = (props) => {
     return (
         <div>
             <div className="notificationBox-large">
-                Reikia įrašyti tik žaidimo pavadinimą ir kainą, bet jei užpildysite ir kitus laukus, bus lengviau jį rasti
+                Užtenka įrašyti tik žaidimo pavadinimą ir kainą, bet jei užpildysite ir kitus laukus, bus lengviau jį rasti
             </div>
             <div className="input-field col s12">
                     <input 

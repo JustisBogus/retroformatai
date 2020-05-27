@@ -93,7 +93,7 @@ class Bundles extends Component {
                     {bundleList} 
                 </div>
                     <div className="bundleList-newBundleButton">
-                        <div onClick={() => this.handleNewBundle()} className="waves-effect waves-light btn blue">
+                        <div onClick={() => this.handleNewBundle()} className="btn-secondary btn waves-light btn blue">
                             Naujas
                         </div>
                     </div>     
