@@ -19,6 +19,9 @@ const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 
                     .interpolate(x => `scale(${x})`)
                 }}>
                     <div className={props.bundle.id === props.selectedBundle ? "selectedBundle" : "bundle"}>
+                        <div onClick={() => props.deleteBundle(props.bundle.id)}>
+                            Pašalinti komplektą
+                        </div>
                         {props.bundle.name}
                         {props.bundle.format}
                         {props.bundle.listed ? "Paskelbtas " : "Nepaskelbtas "} 

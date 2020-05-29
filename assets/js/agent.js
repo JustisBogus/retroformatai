@@ -14,5 +14,8 @@ export const requests = {
     },
     put: (url, body = null) => {
         return superagent.put(`${API_ROOT}${url}`, body).then(responseBody);
+    },
+    del: (url) => {
+        return superagent.del(`${API_ROOT}${url}`).then(responseBody);
     }
 }

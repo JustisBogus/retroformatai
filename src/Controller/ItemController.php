@@ -21,6 +21,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/")
@@ -157,6 +159,18 @@ class ItemController extends AbstractController
     }
 
     /**
+     * @Route("/api/deleteitem/{id}", name="item_delete", methods={"DELETE"})
+     * @Security("is_granted('delete', item)", message="Access denied")
+     */
+    public function deleteItem(Item $item)
+    {
+        $this->entityManager->remove($item);
+        $this->entityManager->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
      * @Route("api/addbundle", name="bundle_add", methods={"POST"})
      */
     public function addBundle(Request $request)
@@ -197,6 +211,18 @@ class ItemController extends AbstractController
         );
 
         return new Response($json);
+    }
+
+    /**
+     * @Route("/api/deletebundle/{id}", name="bundle_delete", methods={"DELETE"})
+     * @Security("is_granted('delete', bundle)", message="Access denied")
+     */
+    public function deleteBundle(Bundle $bundle)
+    {
+        $this->entityManager->remove($bundle);
+        $this->entityManager->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -264,15 +290,6 @@ class ItemController extends AbstractController
             $this->flashBag->add('notice', 'Access denied');
     }
     */
-
-    /**
-     * @Route("/api/editbundle/{id}", name="bundle_edit")
-     */
-    public function editBundle()
-    {
-        $user = $this->tokenStorage->getToken()->getUser();
-    }
-
 
     /**
      * @Route("/bundle/{id}", name="bundle")

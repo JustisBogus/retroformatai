@@ -19,6 +19,9 @@ const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 
                     .interpolate(x => `scale(${x})`)
                 }}>
                     <div className="item">
+                        <div onClick={() => props.deleteItem(props.item.id)}>
+                            Pašalinti žaidimą
+                        </div>
                         {props.item.title}
                         {props.item.format}
                     </div>

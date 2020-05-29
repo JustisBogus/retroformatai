@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Bundle from './Bundle';
 import { connect } from 'react-redux';
-import { selectBundle, bundlesListFetch, itemsListFetch, saveNewBundle, updateBundle } from '../store/actions/bundles';
+import { selectBundle, bundlesListFetch, itemsListFetch,
+     saveNewBundle, updateBundle, deleteBundle } from '../store/actions/bundles';
 import Spinner from './Spinner';
 
 const mapStateToProps = state => ({
@@ -13,7 +14,8 @@ const mapDispatchToProps = {
         bundlesListFetch,
         itemsListFetch,
         saveNewBundle,
-        updateBundle
+        updateBundle,
+        deleteBundle
 }
 
 class Bundles extends Component {
@@ -42,6 +44,10 @@ class Bundles extends Component {
             items: [ ]
         }
         saveNewBundle(newBundle);
+    }
+
+    handleDeleteBundle(id) {
+        this.props.deleteBundle(id);
     }
 
     /*
@@ -79,6 +85,7 @@ class Bundles extends Component {
                     bundle={bundle}
                     selectedBundle={selectedBundle}
                     selectBundle={this.handleSelectBundle.bind(this)}
+                    deleteBundle={this.handleDeleteBundle.bind(this)}
                 />
             })
         }

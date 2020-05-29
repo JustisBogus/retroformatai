@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Bundles from './Bundles';
 import Item from './Item';
 import Form from './Form';
-import { click, createNewItem, saveNewItem, listBundle } from '../store/actions/bundles';
+import { click, createNewItem, saveNewItem, listBundle, deleteItem } from '../store/actions/bundles';
 import Spinner from './Spinner';
 
 const mapStateToProps = state => ({
@@ -14,7 +14,8 @@ const mapDispatchToProps = {
     click,
     createNewItem,
     saveNewItem,
-    listBundle
+    listBundle,
+    deleteItem
 }
 
 class BundleCreator extends Component {
@@ -102,6 +103,10 @@ class BundleCreator extends Component {
         listBundle(selectedBundle);
         console.log('list bundle clicked');
     }
+
+    handleDeleteItem(id) {
+        this.props.deleteItem(id);
+    }
     
     render() {
  
@@ -121,6 +126,7 @@ class BundleCreator extends Component {
                 return <Item
                     key={item.id}
                     item={item}
+                    deleteItem={this.handleDeleteItem.bind(this)}
                 />
             });
         }

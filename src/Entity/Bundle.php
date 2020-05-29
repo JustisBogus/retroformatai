@@ -70,7 +70,7 @@ class Bundle
     private $dateModified;
 
      /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Item", mappedBy="bundle")
+     * @ORM\OneToMany(targetEntity="App\Entity\Item", mappedBy="bundle", cascade={"remove"})
      */    
     private $items;
 

@@ -113,6 +113,12 @@ export const saveNewItem = (item, items, emptyItem, selectedBundle) => {
     };
 };
 
+export const deleteItem = (id) => {
+    return () => {
+        return requests.del(`/api/deleteitem/${id}`);
+    }
+}
+
 export const listBundle = (selectedBundle) => {
     return (dispatch) => {
         return requests.put(`/api/listbundle/${selectedBundle}`, {
@@ -153,4 +159,10 @@ export const saveNewBundle = (newBundle) => {
         })
     };
 };
+
+export const deleteBundle = (id) => {
+    return () => {
+        return requests.del(`/api/deletebundle/${id}`);
+    }
+}
 
