@@ -23,11 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcher;
 
 /**
  * @Route("/")
  */
-class ItemController extends AbstractController
+class ItemController extends AbstractFOSRestController
 {
     /**
      * @var FormFactoryInterface
@@ -93,7 +96,7 @@ class ItemController extends AbstractController
      /**
      * @Route("/api/items/{bundle}", name="api_items", methods={"GET"})
      */
-    public function items($bundle, ItemRepository $itemRepository, Request $request)
+    public function items($bundle, ItemRepository $itemRepository)
     {
         $serializer = $this->serializer;
         $tokenStorage = $this->tokenStorage;
@@ -136,8 +139,10 @@ class ItemController extends AbstractController
 
     /**
      * @Route("/api/additem", name="item_add", methods={"POST"})
+     * @Rest\FileParam(name="image", description="Cover image", nullable=true, image=true)
+     * @param ParamFetcher $paramFetcher
      */
-    public function addItem(Request $request)
+    public function addItem(Request $request, ParamFetcher $paramFetcher)
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $serializer = $this->serializer;
@@ -147,6 +152,20 @@ class ItemController extends AbstractController
         $bundle = $this->entityManager->getRepository(Bundle::class)->find($bundleId);
         $item->setUser($user);
         $item->setBundle($bundle);
+
+        $file = ($paramFetcher->get('image'));
+
+        if ($file) {
+            $filename=md5(uniqid()) . '.' . $file->guessClientExtension();
+            $file->move(
+                $this->getParameter('uploads_dir'),
+                $filename
+            );
+
+            $item->setCover('/uploads/'. $filename);
+        }
+
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($item);
         $em->persist($bundle);
@@ -268,6 +287,17 @@ class ItemController extends AbstractController
             return $this->render('layout/add.html.twig', ['form' => $form->createView()]);
         }
             return new RedirectResponse($this->router->generate('security_login'));
+    }
+
+    /**
+     * @Route("/settings", name="settings")
+     */
+    public function profile()
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+        $username = $user->getUsername();
+
+        return $this->render('layout/settings.html.twig', ['username' => $username]);
     }
 
     /*
