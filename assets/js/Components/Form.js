@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import ImageUpload from './ImageUpload';
 
 const Form = (props) => {
 
@@ -193,6 +194,7 @@ const Form = (props) => {
                     onChange={(event) => props.handleFormInput(event.target.name, event.target.value)}        
                     />
             </div>
+            <ImageUpload/>
         </div>
     );
 }

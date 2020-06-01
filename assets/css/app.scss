@@ -209,6 +209,27 @@ select {
     }
 }
 
+.imageUpload {
+    height: 100%;
+    visibility: hidden;
+    cursor: pointer;
+    position: relative;
+    min-height: 6em;
+}
+
+.imageUpload, .form-control-file:before {
+    visibility: visible;
+    width: 100%;
+    border: 2px dashed lightgrey;
+    border-radius: 6px;
+    text-align: center;overflow: hidden;
+    color: #6c757d;
+    font-size: 1em;
+    min-height: 6em;
+    line-height: 2em;
+    padding-top: 2em;
+}
+
 
 
 

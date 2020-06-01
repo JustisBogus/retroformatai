@@ -17,5 +17,8 @@ export const requests = {
     },
     del: (url) => {
         return superagent.del(`${API_ROOT}${url}`).then(responseBody);
+    },
+    upload: (url, file) => {
+        return superagent.post(`${API_ROOT}${url}`).attach('file', file).then(responseBody);
     }
 }

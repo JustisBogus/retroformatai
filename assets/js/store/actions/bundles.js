@@ -2,7 +2,8 @@ import { CLICK, SELECT_BUNDLE, CREATE_NEW_ITEM, ADD_NEW_ITEM,
     BUNDLES_LIST_RECEIVED, BUNDLES_LIST_ERROR, 
     BUNDLES_LIST_REQUEST, ITEMS_LIST_RECEIVED, 
     ITEMS_LIST_ERROR, ITEMS_LIST_REQUEST, SET_ACTIVE_BUNDLE, 
-    ADD_NEW_BUNDLE, UPDATE_BUNDLE } from "./actionTypes"
+    ADD_NEW_BUNDLE, UPDATE_BUNDLE, 
+    IMAGE_UPLOADED, IMAGE_UPLOAD_REQUEST, IMAGE_UPLOAD_ERROR } from "./actionTypes"
 import { requests } from '../../agent';
 
 export const click = (buttonClicked) => {
@@ -165,4 +166,32 @@ export const deleteBundle = (id) => {
         return requests.del(`/api/deletebundle/${id}`);
     }
 }
+
+export const imageUploaded = (data) => {
+     return {
+         type: IMAGE_UPLOADED,
+         image: data
+     } 
+};
+
+export const imageUploadRequest = () => {
+    return {
+        type: IMAGE_UPLOAD_REQUEST,
+    }
+};
+
+export const imageUploadError = () => {
+    return {
+        type: IMAGE_UPLOAD_ERROR,
+    }
+};
+
+export const imageUpload = (file) => {
+    return (dispatch) => {
+        dispatch(imageUploadRequest());
+        return requests.upload('/api/images', file)
+            .then(response => dispatch(imageUploaded(response)))
+            .catch(() => dispatch(imageUploadError))
+    }
+};
 

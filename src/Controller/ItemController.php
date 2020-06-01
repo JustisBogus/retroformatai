@@ -165,7 +165,6 @@ class ItemController extends AbstractFOSRestController
             $item->setCover('/uploads/'. $filename);
         }
 
-
         $em = $this->getDoctrine()->getManager();
         $em->persist($item);
         $em->persist($bundle);
@@ -175,6 +174,25 @@ class ItemController extends AbstractFOSRestController
             'json', ['groups' => ['user', 'bundle', 'item']]
         );
         return new Response($json);
+    }
+
+    /**
+     * @Route("api/images", name="images_upload", methods={"POST"})
+     * @Rest\FileParam(name="image", description="Cover image", nullable=true, image=true)
+     */
+    public function images(Request $request, ParamFetcher $paramFetcher)
+    {
+        $file = ($paramFetcher->get('image'));
+
+        if($file) {
+            $filename = md5(uniqid()) . '.' . $file->guessClientExtension();
+            $file->move(
+                $this->getParameter('uploads_dir'),
+                $filename
+            );
+        }
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
